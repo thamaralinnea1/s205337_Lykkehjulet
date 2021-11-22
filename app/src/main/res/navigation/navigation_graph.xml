@@ -10,5 +10,14 @@
         android:id="@+id/start"
         android:name="com.example.s205337lykkehjulet.Start"
         android:label="fragment_start"
-        tools:layout="@layout/fragment_start" />
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_start_to_second_fragment"
+            app:destination="@id/second_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/second_fragment"
+        android:name="com.example.s205337lykkehjulet.game.second_fragment"
+        android:label="fragment_second_fragment"
+        tools:layout="@layout/fragment_second_fragment" />
 </navigation>
