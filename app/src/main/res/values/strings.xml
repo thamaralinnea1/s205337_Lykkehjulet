@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">s205337 Lykkehjulet</string>
+    <string name="app_name">Lykkehjulet</string>
+    <string name="button1_text">Dyr</string>
+    <string name="button2_text">Handlinger</string>
+    <string name="button3_text">Ordsprog</string>
+    <string name="button4_text">Udtryk</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
