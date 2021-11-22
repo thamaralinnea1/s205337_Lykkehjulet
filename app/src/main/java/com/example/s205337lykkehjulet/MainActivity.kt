@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.RecyclerView
+import com.example.s205337lykkehjulet.adapter.ItemAdapter
+import com.example.s205337lykkehjulet.data.DataCategories
 import com.example.s205337lykkehjulet.databinding.ActivityMainBinding
 
 /**
@@ -15,7 +18,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        // der skal benyttes binding med binding.root, men det virker ikke lige nu
+        setContentView(R.layout.fragment_start)
+
+
+        // hvor skal denne kode stå?
+        val myDataset = DataCategories().loadButtonContext()
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.adapter = ItemAdapter(this, myDataset)
+        recyclerView.setHasFixedSize(true)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
