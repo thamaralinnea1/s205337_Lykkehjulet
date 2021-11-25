@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/start"
-        android:name="com.example.s205337lykkehjulet.Start"
+        android:name="com.example.s205337lykkehjulet.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/second_fragment"
-        android:name="com.example.s205337lykkehjulet.game.second_fragment"
+        android:name="com.example.s205337lykkehjulet.game.GameFragment"
         android:label="fragment_second_fragment"
         tools:layout="@layout/fragment_second_fragment" />
 </navigation>
