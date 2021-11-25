@@ -6,5 +6,11 @@
     <string name="button4_text">Udtryk</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="test1">Test1</string>
+    <string name="get_ord">Gæt ord</string>
+    <string name="kob_vokal_500_point">Køb vokal 500 point</string>
+    <string name="_5">5</string>
+    <string name="point">Point:</string>
+    <string name="ord_til_at_g_tte">Ord til at gætte</string>
 
 </resources>
