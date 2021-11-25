@@ -7,10 +7,10 @@ class DataCategories {
 
     fun loadButtonContext (): List<ImageButtonCategories> {
     return listOf<ImageButtonCategories> (
-        ImageButtonCategories(R.string.button1_text,R.drawable.dyr2),
-        ImageButtonCategories(R.string.button2_text,R.drawable.handlinger3),
-        ImageButtonCategories(R.string.button3_text, R.drawable.ordsprog3),
-        ImageButtonCategories(R.string.button4_text, R.drawable.udtryk3)
+        ImageButtonCategories(R.string.button1_text,R.drawable.spinhjul1),
+        ImageButtonCategories(R.string.button2_text,R.drawable.spinhjul2),
+        ImageButtonCategories(R.string.button3_text, R.drawable.spinhjul3),
+        ImageButtonCategories(R.string.button4_text, R.drawable.spinhjul4)
             )
     }
 }
