@@ -9,25 +9,28 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.s205337lykkehjulet.R
+import com.example.s205337lykkehjulet.databinding.FragmentSecondFragmentBinding
 import com.example.s205337lykkehjulet.databinding.FragmentStartBinding
 import kotlinx.android.synthetic.main.fragment_second_fragment.view.*
 
 class GameFragment : Fragment() {
     private val viewModel: GameViewHolder by viewModels()
-
-    private var binding: FragmentStartBinding? = null
+    private lateinit var binding: FragmentSecondFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        val root = inflater.inflate(R.layout.fragment_second_fragment, container, false)
+        // Inflate the layout for this fragment trough binding
+        binding = FragmentSecondFragmentBinding.inflate(inflater,container,false)
 
         //Tilfældigt valg ord:
         val category = context?.resources?.getString(requireArguments().getInt("Title"))
 
-        viewModel.generateWord(category!!)
+        binding.guessingWord.text = viewModel.newWord().toString()
 
-        root.findViewById<TextView>(R.id.testTxt).text = viewModel.word
-        return root
+        // brugte vi til at komme ind i de forskellige kategoricard viewms.
+        // viewModel.generateWord(category!!)
+        // root.findViewById<TextView>(R.id.testTxt).text = viewModel.word
+
+        return binding.root
 
     }
 
