@@ -19,15 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
 
-        // der skal benyttes binding med binding.root, men det virker ikke lige nu
-        setContentView(R.layout.fragment_start)
-
-
-        // hvor skal denne kode stå?
-        val myDataset = DataCategories().loadButtonContext()
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.adapter = ItemAdapter(this, myDataset)
-        recyclerView.setHasFixedSize(true)
+        setContentView(binding.root)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
