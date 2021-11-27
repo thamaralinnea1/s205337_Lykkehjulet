@@ -23,6 +23,52 @@ class GameViewHolder: ViewModel() {
         return currentWordList
     }
 
+    fun hideLetters() {
+        currentWordList.forEach {
+            print("*")
+        }
+
+    }
+    // Chekker om det valgte bogstav er inde i det listen over bogstaver for det nuværrende ord.
+    // hvis bogstavet er en del af ordet, da tilføjes det til guessedcorret letters.
+    fun checkGuess(input: String): Boolean {
+
+        // Tilføjer altid mellem da det ikke kan gættes
+        if ((" ") in currentWordList) guessedCorrectLetters.add(" ")
+
+        // Er det et rigtigt bogstav?
+        if (input in currentWordList) {
+            guessedCorrectLetters.add(input)
+            increaseScore()
+            return true
+        }
+        else {
+            wrongGuess()
+            return false
+        }
+    }
+
+    // hvis gættet er forkert mister brugeren et liv.
+    fun wrongGuess () {
+        var newLifeStatus = 1 - life
+    }
+
+    fun checkForWin() {
+        if (guessedCorrectLetters.containsAll(currentWordList))
+        return println("Du har vundet")
+    }
+
+    fun increaseScore() {
+    }
+
+
+
+
+
+
+
+
+
 
 
     var word: String = "null"
