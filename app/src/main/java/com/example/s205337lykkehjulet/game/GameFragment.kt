@@ -36,15 +36,29 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.apply {
-            // Setter en click listner på knapperne i secondfragment
-            root.kob_vokal.setOnClickListener { activateWheel() }
-        }
+        binding.spin.setOnClickListener { activateWheel()}
+        binding.kobVokal.setOnClickListener { buyVocal() }
+        binding.getOrd.setOnClickListener { guessWord()}
+
     }
 
     fun activateWheel () {
         Toast.makeText(activity,"Hjul drejer", Toast.LENGTH_SHORT).show()
     }
 
+    fun buyVocal () {
+        Toast.makeText(activity,"Hob en vokal", Toast.LENGTH_SHORT).show()
+    }
+
+    fun guessWord (){
+        Toast.makeText(activity,"gæt på ord", Toast.LENGTH_SHORT).show()
+    }
+
+    fun letterSubmitted(){
+        val input = binding?.root?.guess?.text.toString()
+        if (viewModel.checkGuess(input)) {
+
+        }
+    }
 }
 
