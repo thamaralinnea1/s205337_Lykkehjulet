@@ -5,12 +5,22 @@ import com.example.s205337lykkehjulet.data.dyr
 
 
 class GameViewHolder: ViewModel() {
-    private val wordList: MutableList<String> = mutableListOf()
+     val wordList = dyr
     // lateint betyder at variablen først definneres senere
-    private lateinit var currentWord: String
+    lateinit var currentWordList: MutableList<String>
+    lateinit var guessedCorrectLetters: MutableList<String>
+    var life = 5
+    var point = 0
 
-    private fun NewWord() {
-        currentWord = dyr.random()
+
+    fun newWord(): MutableList<String> {
+        var currentWordNumber = (0 until (wordList.size)).random()
+        var currentWord = wordList[currentWordNumber]
+        currentWordList = currentWord.split("").toMutableList()
+        currentWordList.removeFirst()
+        currentWordList.removeLast()
+        hideLetters()
+        return currentWordList
     }
 
 
