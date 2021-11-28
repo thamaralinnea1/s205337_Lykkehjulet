@@ -12,9 +12,10 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
     <ImageView
         android:id="@+id/hjul"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:src="@drawable/hjul1"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/gamewheel2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +26,11 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/spin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="268dp"
+        android:layout_marginBottom="256dp"
         android:src="@drawable/spin1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -106,7 +108,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         app:layout_constraintTop_toTopOf="@+id/lives_left"
         app:layout_constraintBottom_toBottomOf="@+id/lives_left"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="16dp"
         />
 
     <TextView
@@ -130,4 +132,17 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/landed_on_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintBottom_toTopOf="@+id/hjul"
+        tools:ignore="MissingConstraints"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/white"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
