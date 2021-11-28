@@ -25,6 +25,7 @@ class GameFragment : Fragment() {
         val category = context?.resources?.getString(requireArguments().getInt("Title"))
 
         binding.guessingWord.text = viewModel.newWord().toString()
+        binding.pointText.text = "Point: ${viewModel.point}"
 
         // brugte vi til at komme ind i de forskellige kategoricard viewms.
         // viewModel.generateWord(category!!)
