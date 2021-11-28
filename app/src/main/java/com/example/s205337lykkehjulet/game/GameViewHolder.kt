@@ -84,6 +84,11 @@ class GameViewHolder: ViewModel() {
     fun increaseScore() {
     }
 
+    fun loseGame () {
+        if (life == 0 ) {
+            println("Spil er tabt")
+        }
+    }
 
 
 
