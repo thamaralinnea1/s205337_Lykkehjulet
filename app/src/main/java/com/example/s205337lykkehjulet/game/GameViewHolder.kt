@@ -5,12 +5,35 @@ import com.example.s205337lykkehjulet.data.dyr
 
 
 class GameViewHolder: ViewModel() {
-     val wordList = dyr
+    val wordList = dyr
+    val FieldList = fieldList
+
     // lateint betyder at variablen først definneres senere
     lateinit var currentWordList: MutableList<String>
     lateinit var guessedCorrectLetters: MutableList<String>
     var life = 5
     var point = 0
+
+    fun spinWheel (): String {
+        var randomWheelField = FieldList.random()
+        when (randomWheelField) {
+            "Mistet Liv" -> {
+                life -= 1
+                println(life)
+            }
+            "Ekstra Liv" -> {
+                life += 1
+                println(life)
+            }
+            "Bankerot" -> {
+                life == 0
+                loseGame()
+            }
+        }
+        return randomWheelField
+    }
+
+
 
 
     fun newWord(): MutableList<String> {
