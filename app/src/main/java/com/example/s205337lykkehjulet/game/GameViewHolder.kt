@@ -33,6 +33,27 @@ class GameViewHolder: ViewModel() {
         return randomWheelField
     }
 
+    // Funktion der tilføjer point til spillerens beholdning svarende til et feelt på hjullet.
+    fun addPoint (randomWheelField: String): Int {
+     when (randomWheelField) {
+         "1000 point" -> {
+             _point += 1000
+         }
+         "500 point" -> {
+             _point += 500
+         }
+         "800 point" -> {
+             _point += 800
+         }
+         "750 point" -> {
+             _point += 750
+         }
+         "250 point" -> {
+             _point += 250
+         }
+     }
+        return _point
+    }
 
 
 
@@ -67,7 +88,6 @@ class GameViewHolder: ViewModel() {
         }
         else {
             wrongGuess()
-            return false
         }
     }
 

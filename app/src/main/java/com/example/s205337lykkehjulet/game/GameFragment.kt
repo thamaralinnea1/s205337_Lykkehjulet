@@ -51,14 +51,17 @@ class GameFragment : Fragment() {
         Toast.makeText(activity,"Hob en vokal", Toast.LENGTH_SHORT).show()
     }
 
-    fun guessWord (){
-        Toast.makeText(activity,"gæt på ord", Toast.LENGTH_SHORT).show()
-    }
-
-    fun letterSubmitted(){
-        val input = binding?.root?.guess?.text.toString()
-        if (viewModel.checkGuess(input)) {
-
+    // Tager input fra brugeren og tildeler det til en variabel.
+    // Variablen bruges til at kalde på metoden checkguess der checker om input er en del af ordet der skal gættes.
+    // Der checkes altid ved letter submitted om hele ordet er gættet i gennem checkForWin.
+    private fun letterSubmitted() {
+        val input = binding.guess.text.toString()
+        viewModel.checkGuess(input)
+        binding.pointsCount.text = "Point: ${viewModel.point}"
+        binding.lifeCount.text = "${viewModel.life}"
+        viewModel.checkForWin()
+        if (viewModel.checkForWin() === true) {
+            return winDialog()
         }
     }
 }

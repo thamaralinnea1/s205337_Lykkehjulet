@@ -7,10 +7,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="test1">Test1</string>
-    <string name="get_ord">Gæt ord</string>
+    <string name="get_ord">Gæt bogstav</string>
     <string name="kob_vokal_500_point">Køb vokal 500 point</string>
-    <string name="_5">5</string>
-    <string name="point">Point:</string>
     <string name="ord_til_at_g_tte">Ord til at gætte</string>
-
+    <string name="point_count">Point: %d</string>
+    <string name="life_count">%d</string>
+    <string name= "dialogMessage">Spillet er slut</string>
+    <string name="exit">Afslut spil</string>
+    <string name="play_again">Spil igen</string>
+    <string name="game_won" >Tillykke du har gættet ordet !</string>
+    <string name="game_lost" >Øv, du tabte spillet</string>
 </resources>
