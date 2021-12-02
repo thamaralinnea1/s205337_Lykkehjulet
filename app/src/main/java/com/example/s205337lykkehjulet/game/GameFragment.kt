@@ -11,26 +11,29 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.example.s205337lykkehjulet.R
 import com.example.s205337lykkehjulet.databinding.FragmentSecondFragmentBinding
-import com.example.s205337lykkehjulet.databinding.FragmentStartBinding
-import kotlinx.android.synthetic.main.fragment_second_fragment.view.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.fragment_second_fragment.*
 
 class GameFragment : Fragment() {
     private val viewModel: GameViewHolder by viewModels()
     private lateinit var binding: FragmentSecondFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment trough binding
-        binding = FragmentSecondFragmentBinding.inflate(inflater,container,false)
 
-        //Tilfældigt valg ord:
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment trough binding
+        binding = FragmentSecondFragmentBinding.inflate(inflater, container, false)
         val category = context?.resources?.getString(requireArguments().getInt("Title"))
 
-        binding.guessingWord.text = viewModel.newWord().toString()
-        binding.pointText.text = "Point: ${viewModel.point}"
+        // Tildeler variablen category ud fra hvilket cardView der af trykket på.
 
-        // brugte vi til at komme ind i de forskellige kategoricard viewms.
-        // viewModel.generateWord(category!!)
-        // root.findViewById<TextView>(R.id.testTxt).text = viewModel.word
+        binding.guessingWord.text = viewModel.setCategory(category!!)
+        binding.pointsCount.text = "Point: ${viewModel.point}"
+        binding.lifeCount.text = "${viewModel.life}"
+        binding.categoryTitle.text = category
 
         return binding.root
 
@@ -109,8 +112,18 @@ class GameFragment : Fragment() {
 
 
     private fun letterSubmitted() {
-        val input = binding.guess.text.toString()
-        viewModel.checkGuess(input)
+        lateinit var input: String
+        if (binding.guessVocal.text != null) {
+            input = binding.guessVocal.text.toString()
+            viewModel.randomWheelField = "Gæt vokal"
+            viewModel.checkGuess(input, guessVocal)
+        }
+        if (binding.guessConsonant.text != null) {
+            input = binding.guessConsonant.text.toString()
+            viewModel.checkGuess(input, guessConsonant)
+        }
+        binding.guessingWord.text =
+            viewModel.showLetter(input.first(), binding.guessingWord.text.toString())
         binding.pointsCount.text = "Point: ${viewModel.point}"
         binding.lifeCount.text = "${viewModel.life}"
         viewModel.checkForWin()

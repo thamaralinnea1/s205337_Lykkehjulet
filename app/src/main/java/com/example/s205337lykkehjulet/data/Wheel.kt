@@ -10,7 +10,6 @@ val fieldList: List<String> =
         "Mistet Liv",
         "250 point",
         "1000 point",
-        "Bankerot",
         "500 point",
         "Ekstra Liv",
         "800 point",

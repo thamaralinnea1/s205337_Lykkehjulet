@@ -1,150 +1,200 @@
 package com.example.s205337lykkehjulet.game
 
+import android.widget.EditText
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
-import com.example.s205337lykkehjulet.data.dyr
+import com.example.s205337lykkehjulet.data.*
+import java.lang.StringBuilder
 
 
-class GameViewHolder: ViewModel() {
-    val wordList = dyr
+class GameViewHolder : ViewModel() {
+    lateinit var wordList: List<String>
     val FieldList = fieldList
+    lateinit var randomWheelField: String
+    lateinit var currentWord: String
+    lateinit var hiddenWord: String
 
     // lateint betyder at variablen først definneres senere
     lateinit var currentWordList: MutableList<String>
-    lateinit var guessedCorrectLetters: MutableList<String>
-    var life = 5
-    var point = 0
+    val guessedCorrectLetters: MutableList<String> = arrayListOf()
 
-    fun spinWheel (): String {
-        var randomWheelField = FieldList.random()
+    private var _life = 5
+    val life: Int
+        get() = _life
+
+    //var lifeStatus by Delegates.notNull<Int>()
+    private var _point = 1000
+    val point: Int
+        get() = _point
+
+
+    fun spinWheel(): String {
+        randomWheelField = FieldList.random()
         when (randomWheelField) {
             "Mistet Liv" -> {
-                life -= 1
-                println(life)
+                _life -= 1
             }
             "Ekstra Liv" -> {
-                life += 1
-                println(life)
+                _life += 1
             }
             "Bankerot" -> {
-                life == 0
-                loseGame()
+                _life = 0
             }
+
         }
+        checkForGameLost()
         return randomWheelField
     }
 
-    // Funktion der tilføjer point til spillerens beholdning svarende til et feelt på hjullet.
-    fun addPoint (randomWheelField: String): Int {
-     when (randomWheelField) {
-         "1000 point" -> {
-             _point += 1000
-         }
-         "500 point" -> {
-             _point += 500
-         }
-         "800 point" -> {
-             _point += 800
-         }
-         "750 point" -> {
-             _point += 750
-         }
-         "250 point" -> {
-             _point += 250
-         }
-     }
+    // Funktion der tilføjer point til spillerens beholdning svarende til det feltet på hjulet.
+    fun addPoint(randomWheelField: String): Int {
+        when (randomWheelField) {
+            "1000 point" -> {
+                _point += 1000
+
+            }
+            "500 point" -> {
+                _point += 500
+            }
+            "800 point" -> {
+                _point += 800
+            }
+            "750 point" -> {
+                _point += 750
+            }
+            "250 point" -> {
+                _point += 250
+            }
+            "Gæt volal" -> {
+            }
+        }
         return _point
     }
 
+    // Returne en liste der svare til den kategori der er valgt.
+    fun setCategory(category: String): String {
+        when (category) {
+            "Dyr" -> {
+                wordList = dyr
+            }
+            "Handlinger" -> {
+                wordList = handlinger
+            }
+            "Udtryk" -> {
+                wordList = udtryk
+            }
+            "Ordsprog" -> {
+                wordList = ordsprog
+            }
+        }
+        return newWord()
+
+    }
 
 
-    fun newWord(): MutableList<String> {
+    fun newWord(): String {
         var currentWordNumber = (0 until (wordList.size)).random()
-        var currentWord = wordList[currentWordNumber]
+        currentWord = wordList[currentWordNumber]
         currentWordList = currentWord.split("").toMutableList()
         currentWordList.removeFirst()
         currentWordList.removeLast()
-        hideLetters()
-        return currentWordList
-    }
 
-    fun hideLetters() {
-        currentWordList.forEach {
-            print("*")
+        val letters = hideLetter()
+
+        hiddenWord = ""
+        for (word in letters) {
+            hiddenWord += word
         }
-
+        showInput = hiddenWord
+        return hiddenWord
     }
-    // Chekker om det valgte bogstav er inde i det listen over bogstaver for det nuværrende ord.
-    // hvis bogstavet er en del af ordet, da tilføjes det til guessedcorret letters.
-    fun checkGuess(input: String): Boolean {
 
+
+    // gemmer hvert bogstav fra currentWordList bag et symbol
+    fun hideLetter(): MutableList<String> {
+
+        var hideCurrentWordList = ""
+        for (i in 1..currentWordList.size) {
+            hideCurrentWordList += "*"
+        }
+        return hideCurrentWordList.split("").toMutableList()
+    }
+
+
+    fun showLetter (letter: Char, hiddenWord: String): String {
+        currentWord
+        var hiddenWordTemp = hiddenWord
+        for (i in 0..currentWord.length) {
+            if (letter in currentWord ) {
+                val letter_position =  currentWord.indexOf(letter,i)
+                if (letter_position != -1) {
+                    val hiddenWordBuilder = StringBuilder(hiddenWordTemp)
+                    hiddenWordBuilder.setCharAt(letter_position, letter)
+                    hiddenWordTemp = hiddenWordBuilder.toString()
+                }
+            }
+        }
+        return hiddenWordTemp
+    }
+
+    fun buyVocal(): Boolean {
+        if (_point >= 500) {
+            _point -= 500
+            return true
+        } else {
+            return false
+        }
+    }
+
+
+    fun guessWord() {
+    }
+
+    // Chekker om det valgte bogstav er inde i  listen over bogstaver for det nuværrende ord.
+    // hvis bogstavet er en del af ordet, da tilføjes det til guessedcorret letters.
+
+    lateinit var showInput: String
+    fun checkGuess(input: String, editText: EditText) {
         // Tilføjer altid mellem da det ikke kan gættes
         if ((" ") in currentWordList) guessedCorrectLetters.add(" ")
 
         // Er det et rigtigt bogstav?
+        // lav til for loop ( for (index, value)
         if (input in currentWordList) {
+            addPoint(randomWheelField)
             guessedCorrectLetters.add(input)
-            increaseScore()
-            return true
-        }
-        else {
+            println(guessedCorrectLetters)
+        } else {
             wrongGuess()
         }
+        editText.setText("")
     }
 
     // hvis gættet er forkert mister brugeren et liv.
-    fun wrongGuess () {
-        var newLifeStatus = 1 - life
-    }
-
-    fun checkForWin() {
-        if (guessedCorrectLetters.containsAll(currentWordList))
-        return println("Du har vundet")
-    }
-
-    fun increaseScore() {
-    }
-
-    fun loseGame () {
-        if (life == 0 ) {
-            println("Spil er tabt")
-        }
+    fun wrongGuess() {
+        _life -= 1
     }
 
 
+    fun checkForWin(): Boolean {
+        return guessedCorrectLetters.containsAll(currentWordList)
+    }
 
 
+    fun checkForGameLost(): Boolean {
+        return life == 0
+    }
 
 
-
-
-
+    // contains ()
+    // wordListCount  -> make a variabel for number of list
+    // wordList -> Make a list from the split word from the number
 
     var word: String = "null"
 
+    fun reinitializeNewGame() {
+        _life = 5
+        _point = 0
 
-    fun generateWord(category: String): String {
-        when (category) {
-            "Dyr" -> {
-                word = "Kategori Dyr"
-                return word
-            }
-            "Handlinger" -> {
-                word = " Kategori Handlinger"
-                return word
-            }
-            "Ordsprog" -> {
-                word = " Kategori Ordsprog"
-                return word
-            }
-            "Udtryk" -> {
-                word = "Kategori Udtryk"
-                return word
-            }
-            else -> {
-                word = "Intet"
-                return word
-            }
-        }
     }
-
 }

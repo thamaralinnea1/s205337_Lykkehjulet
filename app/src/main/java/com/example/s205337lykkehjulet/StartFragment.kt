@@ -28,6 +28,5 @@ class StartFragment : Fragment() {
         recyclerView!!.setHasFixedSize(true)
 
       return root
-
     }
 }

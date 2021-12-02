@@ -12,8 +12,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
     <ImageView
         android:id="@+id/hjul"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         android:scaleType="centerInside"
         android:src="@drawable/gamewheel2"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,21 +24,23 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
     <ImageView
         android:id="@+id/spin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="256dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="260dp"
         android:src="@drawable/spin1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
 
-        android:id="@+id/testTxt"
+        android:id="@+id/category_title"
+        android:textSize="45sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/test1"
+        android:text="Kategori"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
@@ -52,12 +54,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:text="@string/get_ord"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hjul"
-        android:backgroundTint="@color/orange"
         android:textStyle="bold"
         android:textSize="20sp"
         />
-
-
 
     <Button
         android:id="@+id/kob_vokal"
@@ -68,45 +67,45 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_marginStart="25dp"
         app:layout_constraintTop_toBottomOf="@+id/hjul"
         android:text="@string/kob_vokal_500_point"
-        android:backgroundTint="@color/orange"
 
         android:textSize="20sp"
         android:textStyle="bold"
         />
 
     <ImageView
-        android:id="@+id/life"
+        android:id="@+id/life_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/ic_baseline_favorite_24"
+        app:layout_constraintTop_toBottomOf="@id/category_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/lives_left"
+        android:id="@+id/life_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/_5"
+        android:text="@string/life_count"
         android:textSize="20sp"
         android:textColor="@color/white"
         android:layout_marginStart="10dp"
-        app:layout_constraintTop_toTopOf="@+id/life"
-        app:layout_constraintBottom_toBottomOf="@+id/life"
-        app:layout_constraintStart_toEndOf="@+id/life"
+        app:layout_constraintTop_toTopOf="@+id/life_image"
+        app:layout_constraintBottom_toBottomOf="@+id/life_image"
+        app:layout_constraintStart_toEndOf="@+id/life_image"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="0dp" />
 
     <TextView
-        android:id="@+id/point_text"
+        android:id="@+id/points_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/point"
+        android:text="@string/point_count"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="@+id/lives_left"
-        app:layout_constraintBottom_toBottomOf="@+id/lives_left"
+        app:layout_constraintTop_toTopOf="@+id/life_count"
+        app:layout_constraintBottom_toBottomOf="@+id/life_count"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
         />
@@ -115,23 +114,41 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/guessing_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/ord_til_at_g_tte"
         android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/hjul"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="123dp"
-        android:text="@string/ord_til_at_g_tte"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/testTxt"
-        app:layout_constraintBottom_toTopOf="@id/hjul"
-         />
+        app:layout_constraintTop_toBottomOf="@id/category_title"
+        app:layout_constraintVertical_bias="0.324" />
+
     <EditText
-        android:id="@+id/guess"
+        android:id="@+id/guessConsonant"
         android:layout_height="40dp"
         android:layout_width="50dp"
         app:layout_constraintTop_toBottomOf="@+id/guessing_word"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:maxLength="1"
+        android:inputType="text"
+        android:maxLines="1"
+        android:digits="bcdfghjklmnpqrstvxz"
         tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/guessVocal"
+        android:layout_height="40dp"
+        android:layout_width="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/guessing_word"
+        app:layout_constraintStart_toStartOf="@id/guessConsonant"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:maxLength="1"
+        android:inputType="text"
+        android:maxLines="1"
+        android:digits="aeiouyæøå"
+        tools:ignore="MissingConstraints" />
+
 
     <TextView
         android:id="@+id/landed_on_field"

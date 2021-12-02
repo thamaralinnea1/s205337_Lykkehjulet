@@ -17,4 +17,7 @@
     <string name="play_again">Spil igen</string>
     <string name="game_won" >Tillykke du har gættet ordet !</string>
     <string name="game_lost" >Øv, du tabte spillet</string>
+    <string name="rules" >Regler</string>
+    <string name="Category">Vælg kategori</string>
+    <string name="main_title" >Lykkehjul</string>
 </resources>
