@@ -79,8 +79,12 @@ class GameFragment : Fragment() {
         })*/
     }
 
-    fun activateWheel () {
-        Toast.makeText(activity,"Hjul drejer", Toast.LENGTH_SHORT).show()
+    private fun activateWheel() {
+        binding.landedOnField.text = viewModel.spinWheel()
+        binding.lifeCount.text = "${viewModel.life}"
+        if (viewModel.randomWheelField == "Bankerot") {
+            loseDialog()
+        }
     }
 
     private fun buyVocalButton() {
@@ -113,6 +117,45 @@ class GameFragment : Fragment() {
         if (viewModel.checkForWin() === true) {
             return winDialog()
         }
+        // Skal laves om så feletet også fjernes fra currenField i View Model
+        landed_on_field.setText("")
     }
+
+
+    // Hvis spilleren vinder kaldes denne Dialog som giver spilleren mulighed for at gå ud af eller spille igen.
+    private fun winDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.game_won))
+            .setMessage(getString(R.string.dialogMessage))
+            .setNegativeButton(getString(R.string.exit)) { _, _ -> exitGame() }
+            .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame() }
+            .show()
+    }
+
+    private fun loseDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.game_lost))
+            .setNegativeButton(getString(R.string.exit)) { _, _ -> exitGame() }
+            .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame() }
+            .show()
+    }
+
+    private fun exitGame() {
+        activity?.finish()
+    }
+
+    private fun restartGame() {
+        viewModel.reinitializeNewGame()
+    }
+
+
+    private fun View.showkeyboard() {
+        this.requestFocus()
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
 }
+
 
