@@ -38,9 +38,15 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.spin.setOnClickListener { activateWheel()}
-        binding.kobVokal.setOnClickListener { buyVocal() }
-        binding.getOrd.setOnClickListener { guessWord()}
+
+        // fjerner keyboard fra skræm efter at der er indtastet et bogstav
+        val hideKeyboardVocal =
+            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        binding.guessVocal.addTextChangedListener {
+            hideKeyboardVocal.hideSoftInputFromWindow(
+                view.windowToken, 0
+            )
+        }
 
         val hideKeyboardConsonant =
             context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
