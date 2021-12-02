@@ -83,8 +83,20 @@ class GameFragment : Fragment() {
         Toast.makeText(activity,"Hjul drejer", Toast.LENGTH_SHORT).show()
     }
 
-    fun buyVocal () {
-        Toast.makeText(activity,"Hob en vokal", Toast.LENGTH_SHORT).show()
+    private fun buyVocalButton() {
+        if (viewModel.buyVocal() === true) {
+            binding.pointsCount.text = "Point: ${viewModel.point}"
+            guessVocal.isEnabled = true
+            binding.guessVocal.showkeyboard()
+        }
+
+        // https://stackoverflow.com/questions/2506876/how-to-change-position-of-toast-in-android/2507069
+        else {
+            Toast.makeText(
+                activity, "Du har ikke nok point til at købe en vokal!" +
+                        "Spin hjulet og gæt på en konsonant ", Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     // Tager input fra brugeren og tildeler det til en variabel.
