@@ -1,12 +1,13 @@
 package com.example.s205337lykkehjulet.game
 
+import android.content.Context
 import android.os.Bundle
+import android.text.method.DigitsKeyListener
+import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.example.s205337lykkehjulet.R
 import com.example.s205337lykkehjulet.databinding.FragmentSecondFragmentBinding
@@ -41,6 +42,35 @@ class GameFragment : Fragment() {
         binding.kobVokal.setOnClickListener { buyVocal() }
         binding.getOrd.setOnClickListener { guessWord()}
 
+        val hideKeyboardConsonant =
+            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        binding.guessConsonant.addTextChangedListener {
+            hideKeyboardConsonant.hideSoftInputFromWindow(
+                view.windowToken, 0
+            )
+        }
+
+        guessConsonant.isEnabled = false
+        binding.spin.setOnClickListener {
+            activateWheel()
+            binding.guessConsonant.isEnabled = true
+            binding.guessConsonant.showkeyboard()
+        }
+
+        binding.kobVokal.setOnClickListener { buyVocalButton() }
+        binding.getOrd.setOnClickListener { letterSubmitted() }
+
+
+        // https://stackoverflow.com/questions/47298935/handling-enter-key-on-edittext-kotlin-android
+        /* guess_consonant.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                //Perform Code
+                letterSubmitted()
+                guess.setText("")
+                return@OnKeyListener true
+            }
+            false
+        })*/
     }
 
     fun activateWheel () {
@@ -54,6 +84,8 @@ class GameFragment : Fragment() {
     // Tager input fra brugeren og tildeler det til en variabel.
     // Variablen bruges til at kalde på metoden checkguess der checker om input er en del af ordet der skal gættes.
     // Der checkes altid ved letter submitted om hele ordet er gættet i gennem checkForWin.
+
+
     private fun letterSubmitted() {
         val input = binding.guess.text.toString()
         viewModel.checkGuess(input)
