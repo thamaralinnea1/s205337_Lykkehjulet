@@ -4,7 +4,7 @@
     <string name="button2_text">Handlinger</string>
     <string name="button3_text">Ordsprog</string>
     <string name="button4_text">Udtryk</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="test1">Test1</string>
     <string name="get_ord">Gæt bogstav</string>
@@ -26,13 +26,16 @@
     <string name="rule1">Spillet kan spilles af en spiller</string>
     <string name="rule2">Spilleren starter med 5 liv.</string>
     <string name="rule3">Tryk på spin for at dreje hjulet.</string>
-    <string name="rule4">Lander du på et point felt kan du gætte en på en konsonant, gætter du rigtigt får du tilsvarende point til din pointbeholdning.</string>
-    <string name="rule5">Du kan under hele spillet hvis du har nok points købe en vokal ved at trykke på knappen køb vokal.</string>
-    <string name="rule6">Gætter du forkert på enten en konsonant eller en vokal mister du et liv.</string>
-    <string name="rule7">Du kan under hele spillet vælge at gætte på ordet, gætter du forkert mister du alle dine liv og spillet slutter.</string>
-    <string name="rule8">Du kan under hele spillet vælge at gætte på ordet, gætter du forkert mister du alle dine liv og spillet slutter.</string>
-    <string name="rule9">Lander du på feltet Mistet liv fjernes et liv fra din livsbeholdning.</string>
-    <string name="rule10">Lander du på feltet Bankerot mister du alle dine liv og spillet slutter.</string>
-    <string name="rule11">Lander du på feltet Ekstra liv, tildeles du et ekstra liv til din livsbeholdning.</string>
-    <string name="rule12">Spillet vindes når det sidste bogstav er gættet eller der gættes rigtigt på hele ordet.</string>
+    <string name="rule4">Lander du på et point felt kan du gætte en på en konsonant, gætter du rigtigt får du tilsvarende point til din pointbeholdning</string>
+    <string name="rule5">Du kan under hele spillet hvis du har nok points købe en vokal ved at trykke på knappen køb vokal</string>
+    <string name="rule6">Gætter du forkert på enten en konsonant eller en vokal mister du et liv</string>
+    <string name="rule7">Du kan under hele spillet vælge at gætte på ordet, gætter du forkert mister du alle dine liv og spillet slutter</string>
+    <string name="rule8">Du kan under hele spillet vælge at gætte på ordet, gætter du forkert mister du alle dine liv og spillet slutter</string>
+    <string name="rule9">Lander du på feltet Mistet liv fjernes et liv fra din livsbeholdning</string>
+    <string name="rule10">Lander du på feltet Bankerot mister du alle dine liv og spillet slutter</string>
+    <string name="rule11">Lander du på feltet Ekstra liv, tildeles du et ekstra liv til din livsbeholdning</string>
+    <string name="rule12">Spillet vindes når det sidste bogstav er gættet eller der gættes rigtigt på hele ordet</string>
+    <string name="guess_letter">gæt bogstav</string>
+    <string name="buy_vocal">køb vokal</string>
+    <string name="guess">Gæt</string>
 </resources>

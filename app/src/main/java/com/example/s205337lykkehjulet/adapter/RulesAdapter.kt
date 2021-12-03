@@ -7,16 +7,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.s205337lykkehjulet.R
 
-class RulesAdapter (private val ruleList: List<String> ): RecyclerView.Adapter<RulesAdapter.RulesViewHolder> () {
-    class RulesViewHolder(view:View): RecyclerView.ViewHolder(view) {
+/**
+ * Inspiration er fundet fra Andoid codeLab unit 2 Pathway 3
+ * https://developer.android.com/courses/pathways/android-basics-kotlin-unit-2-pathway-3
+ */
+
+class RulesAdapter(private val ruleList: List<String>) :
+    RecyclerView.Adapter<RulesAdapter.RulesViewHolder>() {
+    class RulesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val ruleText: TextView = view.findViewById(R.id.textRule)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RulesViewHolder {
-        val adapterLayout = LayoutInflater.from(parent.context).inflate(R.layout.listofrules, parent,false)
+        val adapterLayout =
+            LayoutInflater.from(parent.context).inflate(R.layout.listofrules, parent, false)
         return RulesViewHolder(adapterLayout)
 
-          }
+    }
 
     override fun onBindViewHolder(holder: RulesViewHolder, position: Int) {
         holder.ruleText.text = ruleList[position]

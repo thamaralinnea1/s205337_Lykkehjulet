@@ -5,6 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.example.s205337lykkehjulet.data.*
 import java.lang.StringBuilder
 
+/**
+ * Lavet i sparing med camilia Boejden s205360
+ * Inspiration fundet fra Android CodeLab unit 3 pathway 3,
+ * https://developer.android.com/courses/pathways/android-basics-kotlin-unit-3-pathway-3#codelab-https://developer.android.com/codelabs/basic-android-kotlin-training-livedata
+ */
 
 class GameViewHolder : ViewModel() {
     private lateinit var wordList: List<String>
@@ -15,6 +20,10 @@ class GameViewHolder : ViewModel() {
     private lateinit var currentWordList: MutableList<String>
     private val guessedCorrectLetters: MutableList<String> = arrayListOf()
 
+    /**
+     * Inspiration til at beyntte live data er fundet fra Andoid CodeLab unit 3 pathway 3
+     ** https://developer.android.com/codelabs/basic-android-kotlin-training-livedata?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-3-pathway-3%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-livedata#3
+     */
     private var _life = 5
     val life: Int
         get() = _life
@@ -22,6 +31,7 @@ class GameViewHolder : ViewModel() {
     private var _point = 0
     val point: Int
         get() = _point
+
 
     // Generere et tilfældigt felt på hjullet of returne det.
     fun spinWheel(): String {
@@ -85,6 +95,9 @@ class GameViewHolder : ViewModel() {
 
     }
 
+    /**
+     * Hjulpet af hjælpelære
+     */
     // Generere at ord ud fra en liste og benytter funktionen hideletters til at returne ordet som * frem for bogstaver.
     private fun newWord(): String {
         val currentWordNumber = (0 until (wordList.size)).random()
@@ -102,24 +115,27 @@ class GameViewHolder : ViewModel() {
         return hiddenWord
     }
 
-
+    /**
+     * Hjulpet af hjælpelære
+     */
     // Gemmer hvert bogstav fra currentWordList bag et symbol
     private fun hideLetter(): MutableList<String> {
 
         var hideCurrentWordList = ""
-        for (i in 0..currentWordList.size - 1) {
-            if (!currentWordList.get(i).equals(" ")) {
+        for (i in 0 until currentWordList.size) {
+            if (currentWordList[i] != " ") {
                 hideCurrentWordList += "*"
             } else {
                 hideCurrentWordList += " "
             }
-
         }
-
         return hideCurrentWordList.split("").toMutableList()
     }
 
 
+    /**
+     * Hjulpet af hjælpelære
+     */
     // Viser ordet når det gættes rigtigt
     fun showLetter(letter: Char, hiddenWord: String): String {
         currentWord
@@ -179,9 +195,4 @@ class GameViewHolder : ViewModel() {
         return life == 0
     }
 
-    // starter et nyt spil
-    fun reinitializeNewGame() {
-        _life = 5
-        _point = 0
-    }
 }

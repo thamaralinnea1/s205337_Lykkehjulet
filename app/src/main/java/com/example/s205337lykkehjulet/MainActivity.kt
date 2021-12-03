@@ -8,7 +8,14 @@ import androidx.navigation.ui.NavigationUI
 import com.example.s205337lykkehjulet.databinding.ActivityMainBinding
 
 /**
- * https://developer.android.com/guide/navigation/navigation-getting-started#kotlin
+ * Inspiration til at benytte NavigationGraph er fundet fra Android CodeLab unit 3 pathway 4
+ * https://developer.android.com/courses/pathways/android-basics-kotlin-unit-3-pathway-4
+ *
+ * Inspiration implementering af recycler view er fundet fra Android CodeLab unit 2 pathway 3
+ * https://developer.android.com/courses/pathways/android-basics-kotlin-unit-2-pathway-3
+ *
+ * Billeder til appen er fundet igennem PNGWING
+ * https://www.pngwing.com/
  */
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }

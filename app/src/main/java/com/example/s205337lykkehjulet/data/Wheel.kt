@@ -1,7 +1,6 @@
 package com.example.s205337lykkehjulet.data
 
-
-
+// Filen indeholder en liste over de mulige felter en spiller kna lande på når hjulet spinner.
 val fieldList: List<String> =
     listOf(
         "Ekstra Liv",
@@ -16,5 +15,6 @@ val fieldList: List<String> =
         "250 point",
         "1000 point",
         "Bankerot",
-        "500 point")
+        "500 point"
+    )
 

@@ -14,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.s205337lykkehjulet.R
 import com.example.s205337lykkehjulet.model.ImageButtonCategories
 
+/**
+* Inspiration er fundet fra Andoid codeLab unit 2 Pathway 3
+* https://developer.android.com/courses/pathways/android-basics-kotlin-unit-2-pathway-3
+*/
+
 class ItemAdapter(private val context: Context, private val dataset: List<ImageButtonCategories>) :
     RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
@@ -39,7 +44,8 @@ class ItemAdapter(private val context: Context, private val dataset: List<ImageB
             Navigation.findNavController(it).navigate(R.id.action_start_to_second_fragment, bundle)
         }
     }
-    override fun getItemCount(): Int{
+
+    override fun getItemCount(): Int {
         return dataset.size
     }
 }

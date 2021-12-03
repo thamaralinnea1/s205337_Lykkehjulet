@@ -17,6 +17,11 @@ import com.example.s205337lykkehjulet.databinding.FragmentSecondFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_second_fragment.*
 
+/**
+ * Akitekturen af gamefragment og den tilhørende viewmodel klasse  er inspireret ud fra Android CodeLab unit 3 pathway 3.
+ * https://developer.android.com/courses/pathways/android-basics-kotlin-unit-3-pathway-3
+ */
+
 class GameFragment : Fragment() {
     private val viewModel: GameViewHolder by viewModels()
     private lateinit var binding: FragmentSecondFragmentBinding
@@ -46,6 +51,7 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Buttons og EditViews sættes til enable = false ved spillet start for at forhindre spilleren i at trykke på dem.
         binding.guessWord.isEnabled = false
         binding.guessButton.isEnabled = false
         binding.guessConsonant.isEnabled = false
@@ -53,19 +59,37 @@ class GameFragment : Fragment() {
 
 
         // knytter funktioner til knapperne i fragmentet
-        binding.spin.setOnClickListener { activateWheel(view)
-                        createKeyboard(guessConsonant)
-                        binding.guessConsonant.isEnabled = true
-                        binding.guessButton.isEnabled = true
-                         guessConsonant.showkeyboard()
+        binding.spin.setOnClickListener {
+            activateWheel(view)
+            createHideableKeyboard(guessConsonant)
+            binding.guessConsonant.isEnabled = true
+            binding.guessButton.isEnabled = true
+            binding.guessWordButton.isEnabled = false
+            binding.guessVocalButton.isEnabled = false
+            binding.spin.isEnabled = false
+            guessConsonant.showkeyboard()
         }
-        binding.guessWordButton.setOnClickListener{
+        binding.guessWordButton.setOnClickListener {
             binding.guessWord.isEnabled = true
             binding.guessButton.isEnabled = true
+            binding.guessVocalButton.isEnabled = false
+            binding. guessWordButton.isEnabled = false
             binding.guessWord.showkeyboard()
         }
-        binding.guessVocalButton.setOnClickListener { buyVocalButton() }
-        binding.guessButton.setOnClickListener { letterSubmitted(view) }
+        binding.guessVocalButton.setOnClickListener {
+            buyVocalButton()
+            binding.guessButton.isEnabled = true
+            binding.guessWordButton.isEnabled = false
+            binding.guessVocalButton.isEnabled = false
+        }
+        binding.guessButton.setOnClickListener {
+            letterSubmitted(view)
+            binding.guessVocalButton.isEnabled = true
+            binding.guessWordButton.isEnabled = true
+            binding.spin.isEnabled = true
+        }
+
+        // Help er et image der gøres clickable og inflater et fragment "rules" ved at kalde på metoden rules()-
         binding.help.setOnClickListener { rules() }
     }
 
@@ -79,52 +103,60 @@ class GameFragment : Fragment() {
         binding.landedOnField.text = viewModel.spinWheel()
         binding.lifeCount.text = "${viewModel.life}"
         if (viewModel.randomWheelField == "Bankerot") {
-            loseDialog(view)
+            return loseDialog(view)
         }
         if (viewModel.life == 0) {
-            loseDialog(view)
+            return loseDialog(view)
         }
     }
 
-    // lader brugeren købe en vokal og åbner keyboard
+    // lader brugeren hvis de har nok point købe en vokal og åbner keyboard
     @SuppressLint("SetTextI18n")
     private fun buyVocalButton() {
         if (viewModel.buyVocal() === true) {
             binding.pointsCount.text = "Point: ${viewModel.point}"
             binding.landedOnField.text = "Gæt på en vokal"
-            createKeyboard(guessVocal)
-            guessVocal.isEnabled = true
+            createHideableKeyboard(guessVocal)
+            binding.guessVocal.isEnabled = true
+            binding.guessWord.isEnabled = false
+            binding.spin.isEnabled = true
             binding.guessVocal.showkeyboard()
-        }
-
-        // https://stackoverflow.com/questions/2506876/how-to-change-position-of-toast-in-android/2507069
-        else {
+        } else {
+            /**
+             * Inspiration fundet igennem StackoverFlow
+             * https://stackoverflow.com/questions/2506876/how-to-change-position-of-toast-in-android/2507069
+             */
             Toast.makeText(
                 activity, "Du har ikke nok point til at købe en vokal!" +
                         "Spin hjulet og gæt på en konsonant ", Toast.LENGTH_LONG
             ).show()
+            binding.guessWordButton.isEnabled = true
+            binding.guessButton.isEnabled = false
         }
     }
 
+    /**
+     * Lavet i sparing med camilia Boejden s205360
+     */
 
     /* Tager input fra brugeren og tildeler det til en variabel.
-       Variablen bruges til at kalde på metoden checkguess der checker om input er en del af ordet der skal gættes.
+       Variablen bruges til at kalde på metoden checkguess() der checker om input er en del af ordet der skal gættes.
        Der checkes altid ved letter submitted om hele ordet er gættet i gennem checkForWin.*/
-
     @SuppressLint("SetTextI18n")
     private fun letterSubmitted(view: View) {
         lateinit var input: String
         if (binding.guessConsonant.text.toString() != "") {
             input = binding.guessConsonant.text.toString()
             viewModel.checkGuess(input, guessConsonant)
-        }
-        else if (binding.guessWord.text.toString() != "") {
-            if(binding.guessWord.text.toString().equals(viewModel.currentWord)) {
+        } else if (binding.guessWord.text.toString() != "") {
+            if (binding.guessWord.text.toString() == viewModel.currentWord) {
                 binding.guessingWord.text = viewModel.currentWord
                 return winDialog(view)
             }
-        }
-        else  {
+            else {
+                return loseDialog(view)
+            }
+        } else {
             input = binding.guessVocal.text.toString()
             viewModel.randomWheelField = "Gæt Vokal"
             viewModel.checkGuess(input, guessVocal)
@@ -137,7 +169,7 @@ class GameFragment : Fragment() {
         if (viewModel.checkForWin() === true) {
             return winDialog(view)
         }
-        if (viewModel.checkForGameLost() === true){
+        if (viewModel.checkForGameLost() === true) {
             return loseDialog(view)
         }
         // Skal laves om så feletet også fjernes fra currenField i View Model
@@ -145,6 +177,11 @@ class GameFragment : Fragment() {
         binding.guessButton.isEnabled = false
     }
 
+
+    /**
+     * Inspiration til WinDialog(), loseDialog(), exitGame() og restartGame() er fundet fra Android Codelab unit 3 pathway 3.
+     * https://developer.android.com/codelabs/basic-android-kotlin-training-viewmodel?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-3-pathway-3%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-viewmodel#7
+     */
     // Hvis spilleren vinder kaldes denne Dialog som giver spilleren mulighed for at gå ud af eller spille igen.
     private fun winDialog(view: View) {
         MaterialAlertDialogBuilder(requireContext())
@@ -155,6 +192,7 @@ class GameFragment : Fragment() {
             .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame(view) }
             .show()
     }
+
     // Hvis spilleren taber kaldes denne Dialog.
     private fun loseDialog(view: View) {
         MaterialAlertDialogBuilder(requireContext())
@@ -172,9 +210,14 @@ class GameFragment : Fragment() {
     /* Hvis spilleren trykker på dialog knappen "Spil igen tages spilleren tilbage
        til FragmentStart hvor de kna vælge en ny kategori*/
     private fun restartGame(view: View) {
-     Navigation.findNavController(view).navigate(GameFragmentDirections.actionSecondFragmentToStart())
+        Navigation.findNavController(view)
+            .navigate(GameFragmentDirections.actionSecondFragmentToStart())
     }
 
+
+    /**
+     * Lavet i sparing med camilia Boejden s205360
+     */
     // Viser keyboarded på skærmen.
     private fun View.showkeyboard() {
         this.requestFocus()
@@ -183,9 +226,19 @@ class GameFragment : Fragment() {
         inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
     }
 
-    private fun createKeyboard (editText: EditText) {
-        val hidekeyboard = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        editText.addTextChangedListener { hidekeyboard.hideSoftInputFromWindow(view?.windowToken,0) }
+    /**
+     * Inspiration taget fra Stackoverflow
+     * https://stackoverflow.com/questions/41790357/close-hide-the-android-soft-keyboard-with-kotlin
+     */
+    private fun createHideableKeyboard(editText: EditText) {
+        val hidekeyboard =
+            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        editText.addTextChangedListener {
+            hidekeyboard.hideSoftInputFromWindow(
+                view?.windowToken,
+                0
+            )
+        }
     }
 }
 
