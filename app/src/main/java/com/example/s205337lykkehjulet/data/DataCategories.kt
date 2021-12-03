@@ -1,5 +1,4 @@
 package com.example.s205337lykkehjulet.data
-
 import com.example.s205337lykkehjulet.R
 import com.example.s205337lykkehjulet.model.ImageButtonCategories
 

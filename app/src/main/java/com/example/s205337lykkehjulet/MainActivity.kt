@@ -5,11 +5,7 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import androidx.recyclerview.widget.RecyclerView
-import com.example.s205337lykkehjulet.adapter.ItemAdapter
-import com.example.s205337lykkehjulet.data.DataCategories
 import com.example.s205337lykkehjulet.databinding.ActivityMainBinding
-import com.example.s205337lykkehjulet.game.GameViewHolder
 
 /**
  * https://developer.android.com/guide/navigation/navigation-getting-started#kotlin

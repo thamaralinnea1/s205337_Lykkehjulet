@@ -1,98 +1,102 @@
 package com.example.s205337lykkehjulet.game
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.text.method.DigitsKeyListener
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.s205337lykkehjulet.R
 import com.example.s205337lykkehjulet.databinding.FragmentSecondFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_second_fragment.*
+import kotlinx.android.synthetic.main.fragment_second_fragment.guessWord as guessWord1
 
 class GameFragment : Fragment() {
     private val viewModel: GameViewHolder by viewModels()
     private lateinit var binding: FragmentSecondFragmentBinding
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment trough binding
+    ): View {
+        // Inflater layoutet fra dette fragment igennem binding
         binding = FragmentSecondFragmentBinding.inflate(inflater, container, false)
         val category = context?.resources?.getString(requireArguments().getInt("Title"))
 
-        // Tildeler variablen category ud fra hvilket cardView der af trykket på.
-
+        // Tildeler variablen en kategori ud fra hvilket cardView der af trykket på.
         binding.guessingWord.text = viewModel.setCategory(category!!)
+
+        //sætter liv, point og kategori på fragmentet
         binding.pointsCount.text = "Point: ${viewModel.point}"
         binding.lifeCount.text = "${viewModel.life}"
         binding.categoryTitle.text = category
 
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // fjerner keyboard fra skræm efter at der er indtastet et bogstav
-        val hideKeyboardVocal =
-            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        binding.guessVocal.addTextChangedListener {
-            hideKeyboardVocal.hideSoftInputFromWindow(
-                view.windowToken, 0
-            )
-        }
+        binding.guessWord.isEnabled = false
+        binding.guessButton.isEnabled = false
 
-        val hideKeyboardConsonant =
-            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        binding.guessConsonant.addTextChangedListener {
-            hideKeyboardConsonant.hideSoftInputFromWindow(
-                view.windowToken, 0
-            )
-        }
-
+        // knytter funktioner til knapperne i fragmentet
         guessConsonant.isEnabled = false
-        binding.spin.setOnClickListener {
-            activateWheel()
-            binding.guessConsonant.isEnabled = true
-            binding.guessConsonant.showkeyboard()
+        binding.spin.setOnClickListener { activateWheel()
+                        createKeyboard(guessConsonant)
+                        binding.guessConsonant.isEnabled = true
+                        binding.guessButton.isEnabled = true
+                         guessConsonant.showkeyboard()
         }
+        binding.guessWordButton.setOnClickListener{
+            binding.guessWord.isEnabled = true
 
-        binding.kobVokal.setOnClickListener { buyVocalButton() }
-        binding.getOrd.setOnClickListener { letterSubmitted() }
-
-
-        // https://stackoverflow.com/questions/47298935/handling-enter-key-on-edittext-kotlin-android
-        /* guess_consonant.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-                //Perform Code
-                letterSubmitted()
-                guess.setText("")
-                return@OnKeyListener true
-            }
-            false
-        })*/
+            binding.guessWord.showkeyboard()
+        }
+        binding.guessVocalButton.setOnClickListener { buyVocalButton() }
+        binding.guessButton.setOnClickListener { letterSubmitted() }
+        binding.help.setOnClickListener { rules() }
     }
 
+    // funktion der inflater fragmentet fragment_rules ud navigationsniagrammet
+    private fun rules() {
+        findNavController().navigate(R.id.action_second_fragment_to_rulesFragment)
+    }
+
+    //aktivere hjulet og generee et felt ud fra spinWheel ()
     private fun activateWheel() {
         binding.landedOnField.text = viewModel.spinWheel()
         binding.lifeCount.text = "${viewModel.life}"
         if (viewModel.randomWheelField == "Bankerot") {
             loseDialog()
         }
+        if (viewModel.randomWheelField == "Mistet Liv") {
+            guessConsonant.isEnabled = false
+        }
+        if (viewModel.randomWheelField == "Ekstra Liv") {
+            guessConsonant.isEnabled = false
+        }
+        if (viewModel.life == 0) {
+            loseDialog()
+        }
     }
 
+    // lader brugeren købe en vokal og åbner keyboard
+    @SuppressLint("SetTextI18n")
     private fun buyVocalButton() {
         if (viewModel.buyVocal() === true) {
             binding.pointsCount.text = "Point: ${viewModel.point}"
+            binding.landedOnField.text = "Gæt på en vokal"
+            createKeyboard(guessVocal)
             guessVocal.isEnabled = true
             binding.guessVocal.showkeyboard()
         }
@@ -106,21 +110,28 @@ class GameFragment : Fragment() {
         }
     }
 
-    // Tager input fra brugeren og tildeler det til en variabel.
-    // Variablen bruges til at kalde på metoden checkguess der checker om input er en del af ordet der skal gættes.
-    // Der checkes altid ved letter submitted om hele ordet er gættet i gennem checkForWin.
 
+    /* Tager input fra brugeren og tildeler det til en variabel.
+       Variablen bruges til at kalde på metoden checkguess der checker om input er en del af ordet der skal gættes.
+       Der checkes altid ved letter submitted om hele ordet er gættet i gennem checkForWin.*/
 
+    @SuppressLint("SetTextI18n")
     private fun letterSubmitted() {
         lateinit var input: String
-        if (binding.guessVocal.text != null) {
-            input = binding.guessVocal.text.toString()
-            viewModel.randomWheelField = "Gæt vokal"
-            viewModel.checkGuess(input, guessVocal)
-        }
-        if (binding.guessConsonant.text != null) {
+        if (binding.guessConsonant.text.toString() != "") {
             input = binding.guessConsonant.text.toString()
             viewModel.checkGuess(input, guessConsonant)
+        }
+        else if (binding.guessWord.text.toString() != "") {
+            if(binding.guessWord.text.toString().equals(viewModel.currentWord)) {
+                binding.guessingWord.text = viewModel.currentWord
+                return winDialog()
+            }
+        }
+        else  {
+            input = binding.guessVocal.text.toString()
+            viewModel.randomWheelField = "Gæt Vokal"
+            viewModel.checkGuess(input, guessVocal)
         }
         binding.guessingWord.text =
             viewModel.showLetter(input.first(), binding.guessingWord.text.toString())
@@ -130,24 +141,28 @@ class GameFragment : Fragment() {
         if (viewModel.checkForWin() === true) {
             return winDialog()
         }
+        if (viewModel.checkForGameLost() === true){
+            loseDialog()
+        }
         // Skal laves om så feletet også fjernes fra currenField i View Model
-        landed_on_field.setText("")
+        landed_on_field.text = ""
     }
-
 
     // Hvis spilleren vinder kaldes denne Dialog som giver spilleren mulighed for at gå ud af eller spille igen.
     private fun winDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.game_won))
             .setMessage(getString(R.string.dialogMessage))
+            .setCancelable(false)
             .setNegativeButton(getString(R.string.exit)) { _, _ -> exitGame() }
             .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame() }
             .show()
     }
-
+    // Hvis spilleren taber kaldes denne Dialog.
     private fun loseDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.game_lost))
+            .setCancelable(false)
             .setNegativeButton(getString(R.string.exit)) { _, _ -> exitGame() }
             .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame() }
             .show()
@@ -160,8 +175,7 @@ class GameFragment : Fragment() {
     private fun restartGame() {
         viewModel.reinitializeNewGame()
     }
-
-
+    // viser keyboarded på skærmen.
     private fun View.showkeyboard() {
         this.requestFocus()
         val inputMethodManager =
@@ -169,6 +183,10 @@ class GameFragment : Fragment() {
         inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
     }
 
+    private fun createKeyboard (editText: EditText) {
+        val hidekeyboard = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        editText.addTextChangedListener { hidekeyboard.hideSoftInputFromWindow(view?.windowToken,0) }
+    }
 }
 
 

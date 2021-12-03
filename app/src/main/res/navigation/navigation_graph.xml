@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/rulesFragment">
+    app:startDestination="@id/start">
 
     <fragment
         android:id="@+id/start"
@@ -19,14 +19,21 @@
         android:id="@+id/second_fragment"
         android:name="com.example.s205337lykkehjulet.game.GameFragment"
         android:label="@string/main_title"
-        tools:layout="@layout/fragment_second_fragment" />
+        tools:layout="@layout/fragment_second_fragment" >
+        <action
+            android:id="@+id/action_second_fragment_to_start"
+            app:destination="@id/start" />
+        <action
+            android:id="@+id/action_second_fragment_to_rulesFragment"
+            app:destination="@id/rulesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/rulesFragment"
         android:name="com.example.s205337lykkehjulet.RulesFragment"
         android:label="@string/rules"
         tools:layout="@layout/fragment_rules" >
         <action
-            android:id="@+id/action_rulesFragment_to_startFragment"
-            app:destination="@id/start" />
+            android:id="@+id/action_rulesFragment_to_second_fragment"
+            app:destination="@id/second_fragment" />
     </fragment>
 </navigation>

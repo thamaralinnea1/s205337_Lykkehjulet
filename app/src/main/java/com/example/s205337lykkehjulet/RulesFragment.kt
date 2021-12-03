@@ -5,23 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.s205337lykkehjulet.adapter.ItemAdapter
-import com.example.s205337lykkehjulet.data.DataCategories
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.s205337lykkehjulet.adapter.RulesAdapter
 import com.example.s205337lykkehjulet.databinding.FragmentRulesBinding
-import com.example.s205337lykkehjulet.databinding.FragmentSecondFragmentBinding
 
 class RulesFragment : Fragment() {
 
     private lateinit var binding: FragmentRulesBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment trough binding
         binding = FragmentRulesBinding.inflate(inflater, container, false)
 
@@ -30,11 +24,24 @@ class RulesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.startGame.setOnClickListener { goToNewFragment() }
+        val list = listOf<String>(
+            getString(R.string.rule1),
+            getString(R.string.rule2),
+            getString(R.string.rule3),
+            getString(R.string.rule4),
+            getString(R.string.rule5),
+            getString(R.string.rule6),
+            getString(R.string.rule7),
+            getString(R.string.rule8),
+            getString(R.string.rule9),
+            getString(R.string.rule10),
+            getString(R.string.rule11),
+            getString(R.string.rule12),
+        )
+        val recyclerView = binding.rulesText
+        recyclerView.apply {
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.adapter = RulesAdapter(list)
+        }
     }
-
-    fun goToNewFragment() {
-        findNavController().navigate(R.id.action_rulesFragment_to_startFragment)
-    }
-
 }
