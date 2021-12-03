@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.s205337lykkehjulet.R
 import com.example.s205337lykkehjulet.databinding.FragmentSecondFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_second_fragment.*
-import kotlinx.android.synthetic.main.fragment_second_fragment.guessWord as guessWord1
 
 class GameFragment : Fragment() {
     private val viewModel: GameViewHolder by viewModels()
@@ -48,10 +48,12 @@ class GameFragment : Fragment() {
 
         binding.guessWord.isEnabled = false
         binding.guessButton.isEnabled = false
+        binding.guessConsonant.isEnabled = false
+        binding.guessVocal.isEnabled = false
+
 
         // knytter funktioner til knapperne i fragmentet
-        guessConsonant.isEnabled = false
-        binding.spin.setOnClickListener { activateWheel()
+        binding.spin.setOnClickListener { activateWheel(view)
                         createKeyboard(guessConsonant)
                         binding.guessConsonant.isEnabled = true
                         binding.guessButton.isEnabled = true
@@ -59,11 +61,11 @@ class GameFragment : Fragment() {
         }
         binding.guessWordButton.setOnClickListener{
             binding.guessWord.isEnabled = true
-
+            binding.guessButton.isEnabled = true
             binding.guessWord.showkeyboard()
         }
         binding.guessVocalButton.setOnClickListener { buyVocalButton() }
-        binding.guessButton.setOnClickListener { letterSubmitted() }
+        binding.guessButton.setOnClickListener { letterSubmitted(view) }
         binding.help.setOnClickListener { rules() }
     }
 
@@ -73,20 +75,14 @@ class GameFragment : Fragment() {
     }
 
     //aktivere hjulet og generee et felt ud fra spinWheel ()
-    private fun activateWheel() {
+    private fun activateWheel(view: View) {
         binding.landedOnField.text = viewModel.spinWheel()
         binding.lifeCount.text = "${viewModel.life}"
         if (viewModel.randomWheelField == "Bankerot") {
-            loseDialog()
-        }
-        if (viewModel.randomWheelField == "Mistet Liv") {
-            guessConsonant.isEnabled = false
-        }
-        if (viewModel.randomWheelField == "Ekstra Liv") {
-            guessConsonant.isEnabled = false
+            loseDialog(view)
         }
         if (viewModel.life == 0) {
-            loseDialog()
+            loseDialog(view)
         }
     }
 
@@ -116,7 +112,7 @@ class GameFragment : Fragment() {
        Der checkes altid ved letter submitted om hele ordet er gættet i gennem checkForWin.*/
 
     @SuppressLint("SetTextI18n")
-    private fun letterSubmitted() {
+    private fun letterSubmitted(view: View) {
         lateinit var input: String
         if (binding.guessConsonant.text.toString() != "") {
             input = binding.guessConsonant.text.toString()
@@ -125,7 +121,7 @@ class GameFragment : Fragment() {
         else if (binding.guessWord.text.toString() != "") {
             if(binding.guessWord.text.toString().equals(viewModel.currentWord)) {
                 binding.guessingWord.text = viewModel.currentWord
-                return winDialog()
+                return winDialog(view)
             }
         }
         else  {
@@ -139,32 +135,33 @@ class GameFragment : Fragment() {
         binding.lifeCount.text = "${viewModel.life}"
         viewModel.checkForWin()
         if (viewModel.checkForWin() === true) {
-            return winDialog()
+            return winDialog(view)
         }
         if (viewModel.checkForGameLost() === true){
-            loseDialog()
+            return loseDialog(view)
         }
         // Skal laves om så feletet også fjernes fra currenField i View Model
         landed_on_field.text = ""
+        binding.guessButton.isEnabled = false
     }
 
     // Hvis spilleren vinder kaldes denne Dialog som giver spilleren mulighed for at gå ud af eller spille igen.
-    private fun winDialog() {
+    private fun winDialog(view: View) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.game_won))
             .setMessage(getString(R.string.dialogMessage))
             .setCancelable(false)
             .setNegativeButton(getString(R.string.exit)) { _, _ -> exitGame() }
-            .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame() }
+            .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame(view) }
             .show()
     }
     // Hvis spilleren taber kaldes denne Dialog.
-    private fun loseDialog() {
+    private fun loseDialog(view: View) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.game_lost))
             .setCancelable(false)
             .setNegativeButton(getString(R.string.exit)) { _, _ -> exitGame() }
-            .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame() }
+            .setPositiveButton(getString(R.string.play_again)) { _, _ -> restartGame(view) }
             .show()
     }
 
@@ -172,10 +169,13 @@ class GameFragment : Fragment() {
         activity?.finish()
     }
 
-    private fun restartGame() {
-        viewModel.reinitializeNewGame()
+    /* Hvis spilleren trykker på dialog knappen "Spil igen tages spilleren tilbage
+       til FragmentStart hvor de kna vælge en ny kategori*/
+    private fun restartGame(view: View) {
+     Navigation.findNavController(view).navigate(GameFragmentDirections.actionSecondFragmentToStart())
     }
-    // viser keyboarded på skærmen.
+
+    // Viser keyboarded på skærmen.
     private fun View.showkeyboard() {
         this.requestFocus()
         val inputMethodManager =

@@ -19,7 +19,7 @@ class GameViewHolder : ViewModel() {
     val life: Int
         get() = _life
 
-    private var _point = 1000
+    private var _point = 0
     val point: Int
         get() = _point
 
